@@ -1,0 +1,64 @@
+
+uint64 AttN[0100], AttK[0100], SqSet[0100], SqClear[0100];
+uint64 AttPb[0100], AttPw[0100];
+uint64 MM_ORTHO[102400];
+uint64 MM_DIAG[5248];
+type_MM ROOK_MM[64], BISHOP_MM[64];
+
+static const uint64 RankArray[8] =
+  { 0x00000000000000ff, 0x000000000000ff00,
+    0x0000000000ff0000, 0x00000000ff000000,
+    0x000000ff00000000, 0x0000ff0000000000,
+    0x00ff000000000000, 0xff00000000000000
+  };
+
+#define RANK1 0x00000000000000ff
+#define RANK2 0x000000000000ff00
+#define RANK3 0x0000000000ff0000
+#define RANK4 0x00000000ff000000
+#define RANK5 0x000000ff00000000
+#define RANK6 0x0000ff0000000000
+#define RANK7 0x00ff000000000000
+#define RANK8 0xff00000000000000
+
+static const uint64 FileArray[8] =
+  { 0x0101010101010101, 0x0202020202020202,
+    0x0404040404040404, 0x0808080808080808,
+    0x1010101010101010, 0x2020202020202020,
+    0x4040404040404040, 0x8080808080808080
+  };
+
+#define FILEa 0x0101010101010101
+#define FILEb 0x0202020202020202
+#define FILEc 0x0404040404040404
+#define FILEd 0x0808080808080808
+#define FILEe 0x1010101010101010
+#define FILEf 0x2020202020202020
+#define FILEg 0x4040404040404040
+#define FILEh 0x8080808080808080
+
+uint64 ORTHO[0100], DIAG[0100];
+
+#ifdef ONE_DIMENSIONAL /* one-dimensional */
+#define InterPose(x, y) INTERPOSE[64 * (x) + (y)]
+#define Evade(x, y) EVADE[64 * (x) + (y)]
+uint64 INTERPOSE[0100 * 0100];
+uint64 EVADE[0100 * 0100];
+#else
+#define InterPose(x, y) INTERPOSE[x][y]
+#define Evade(x, y) EVADE[x][y]
+uint64 INTERPOSE[64][64], EVADE[64][64];
+#endif
+
+static const uint64 LIGHT = 0x55aa55aa55aa55aa;
+static const uint64 DARK = 0xaa55aa55aa55aa55;
+static const uint64 F1G1 = 0x0000000000000060;
+static const uint64 C1D1 = 0x000000000000000c;
+static const uint64 B1C1D1 = 0x000000000000000e;
+static const uint64 F8G8 = 0x6000000000000000;
+static const uint64 C8D8 = 0x0c00000000000000;
+static const uint64 B8C8D8 = 0x0e00000000000000;
+
+static const uint64 Ranks3to7 = 0x00ffffffffff0000;
+static const uint64 Ranks2to6 = 0x0000ffffffffff00;
+
