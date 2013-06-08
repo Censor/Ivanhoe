@@ -1,6 +1,6 @@
 
 #include "RobboLito.h"
-#include "pawn_eval.v"
+#include "pawn_eval.h"
 
 typedef struct
 {

@@ -42,7 +42,7 @@ boolean SPLIT_AT_CUT;
 int CUT_SPLIT_DEPTH, ALL_SPLIT_DEPTH, PV_SPLIT_DEPTH;
 #else
 #define SPLIT_AT_CUT TRUE
-#define CUT_SPLIT_DEPTH 16
-#define ALL_SPLIT_DEPTH 14
-#define PV_SPLIT_DEPTH 14
+#define CUT_SPLIT_DEPTH 14 // Was: 16; Changed by Yuri Censor on 6/7/2013
+#define ALL_SPLIT_DEPTH 12 // Was: 14
+#define PV_SPLIT_DEPTH 12  // Was: 14
 #endif

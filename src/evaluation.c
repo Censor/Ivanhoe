@@ -5,7 +5,8 @@
 #define Ranks123 0x00000000000ffffff
 
 #include "RobboLito.h"
-#include "evaluation.v"
+#include "evaluation.h"
+#include "mios.h"
 
 #ifndef MINIMAL
 typedef struct { uint64 RandKey; uint8 pad[56]; } RAND; /* cache */
@@ -60,6 +61,17 @@ static void AdjustPositionalGain (typePOS* POSITION, int move)
 
 static int MaterialValue (typePOS* POSITION)
 {
+#ifdef SEE_VALUE	
+	int Value = QueenMatVal * (POPCNT (wBitboardQ) - POPCNT (bBitboardQ));
+	Value += RookMatVal * (POPCNT (wBitboardR) - POPCNT (bBitboardR));
+	Value += BishopMatVal * (POPCNT (wBitboardB) - POPCNT (bBitboardB));
+	Value += KnightMatVal * (POPCNT (wBitboardN) - POPCNT (bBitboardN));
+	Value += PawnMatVal * (POPCNT (wBitboardP) - POPCNT (bBitboardP));
+	if (wBitboardBL && wBitboardBD)
+		Value += BishopPairMatVal;
+	if (bBitboardBL && bBitboardBD)
+		Value -= BishopPairMatVal;
+#else
   int Value = 975 * (POPCNT (wBitboardQ) - POPCNT (bBitboardQ));
   Value += 500 * (POPCNT (wBitboardR) - POPCNT (bBitboardR));
   Value += 325 * (POPCNT (wBitboardB) - POPCNT (bBitboardB));
@@ -69,6 +81,7 @@ static int MaterialValue (typePOS* POSITION)
     Value += 50;
   if (bBitboardBL && bBitboardBD)
     Value -= 50;
+#endif
   Value *= UCI_MATERIAL_WEIGHTING;
   Value >>= 10;
   if (Value > 2000)
@@ -706,6 +719,13 @@ void Eval (typePOS* POSITION, int min, int max, int move, int depth)
 	      POSITION->XRAYw[BSF (T)] = b;
 	    }
 	}
+#ifdef EVAL_PINS
+	  if (white_rook_pin_target & ORTHO[b]) {
+		  T = between[b][BSF(white_rook_pin_target & ORTHO[b])] & (wBitboardOcc | bBitboardOcc);
+		  if ((T & (T - 1)) == 0) 
+			  Value += pin_score_white_rook[POSITION->sq[BSF(T)]];
+	  }
+#endif
       if (A & bKatt)
 	bKhit += HitR;
       if (A & bBitboardK)
@@ -728,7 +748,9 @@ void Eval (typePOS* POSITION, int min, int max, int move, int depth)
 	  Value -= PattR;
 	  bGoodAtt += 1;
 	}
-
+#ifdef EVAL_ROOK_FIX
+	  if (A & (wBitboardR | wBitboardQ)) Value += rook_connected;
+#endif
       if ((wBitboardP & OpenFileW[b]) == 0)
 	{
 	  Value += RookHalfOpen;
@@ -737,6 +759,9 @@ void Eval (typePOS* POSITION, int min, int max, int move, int depth)
 	      T = bGoodMinor & OpenFileW[b];
 	      if (!T)
 		Value += RookOpenFile;
+#ifdef EVAL_ROOK_FIX
+		  if (A & OpenFileB[b] & (wBitboardR | wBitboardQ)) Value += rook_open_doubled;
+#endif
 	      else
 		{
 		  int t = BSF (T);
@@ -811,6 +836,12 @@ void Eval (typePOS* POSITION, int min, int max, int move, int depth)
 	      POSITION->XRAYw[BSF (T)] = b;
 	    }
 	}
+#ifdef EVAL_PINS
+	  for (AttB = white_bishop_pin_target & DIAG[b]; AttB != 0; AttB &= (AttB - 1)) {
+		  T = between[b][BSF(AttB)] & (wBitboardOcc | bBitboardOcc);
+		  if ((T & (T - 1)) == 0) Value += pin_score_white_bishop[POSITION->sq[BSF(T)]];
+	  }
+#endif
       if (A & bKatt)
 	bKhit += HitB;
       if (A & bBitboardK)
@@ -1007,6 +1038,12 @@ void Eval (typePOS* POSITION, int min, int max, int move, int depth)
 	      POSITION->XRAYb[BSF (T)] = b;
 	    }
 	}
+#ifdef EVAL_PINS
+	  if (black_rook_pin_target & ORTHO[b]) {
+		  T = between[b][BSF(black_rook_pin_target & ORTHO[b])] & (wBitboardOcc | bBitboardOcc);
+		  if ((T & (T - 1)) == 0) Value -= pin_score_black_rook[POSITION->sq[BSF(T)]];
+	  }
+#endif
       if (A & wKatt)
 	wKhit += HitR;
       if (A & wBitboardK)
@@ -1029,7 +1066,9 @@ void Eval (typePOS* POSITION, int min, int max, int move, int depth)
 	  Value += PattR;
 	  wGoodAtt += 1;
 	}
-
+#ifdef EVAL_ROOK_FIX
+	  if (A & (bBitboardR | bBitboardQ)) Value -= rook_connected;
+#endif
       if ((bBitboardP & OpenFileB[b]) == 0)
 	{
 	  Value -= RookHalfOpen;
@@ -1038,6 +1077,9 @@ void Eval (typePOS* POSITION, int min, int max, int move, int depth)
 	      T = wGoodMinor & OpenFileB[b];
 	      if (!T)
 		Value -= RookOpenFile;
+#ifdef EVAL_ROOK_FIX
+		  if (A & OpenFileW[b] & (bBitboardR | bBitboardQ)) Value -= rook_open_doubled;
+#endif
 	      else
 		{
 		  int t = BSR (T);
@@ -1112,6 +1154,12 @@ void Eval (typePOS* POSITION, int min, int max, int move, int depth)
 	      POSITION->XRAYb[BSF (T)] = b;
 	    }
 	}
+#ifdef EVAL_PINS
+	  for (AttB = black_bishop_pin_target & DIAG[b]; AttB != 0; AttB &= (AttB - 1)) {
+		  T = between[b][BSF(AttB)] & (wBitboardOcc | bBitboardOcc);
+		  if ((T & (T - 1)) == 0) Value -= pin_score_black_bishop[POSITION->sq[BSF(T)]];
+	  }
+#endif
       if (A & wKatt)
 	wKhit += HitB;
       if (A & wBitboardK)

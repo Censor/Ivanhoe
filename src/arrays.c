@@ -647,6 +647,33 @@ void InitArrays ()
 	if ((FILE (j) - FILE (i)) == (RANK (i) - RANK (j)))
 	  Line (i, j) = Direction_h1a8;
       }
+#ifdef EVAL_PINS
+	for (i = A1; i <= H8; i++) {
+		for (j = i + 1; j <= H8; j++) {
+			between[i][j] = 0;
+			if (RANK(i) == RANK(j) || FILE(i) == FILE(j)) {
+				between[i][j] = ORTHO[i] & ORTHO[j];
+				for (sq = A1; sq <= H8; sq++) {
+					if (RANK(sq) >= RANK(i) && RANK(sq) >= RANK(j)) between[i][j] &= SqClear[sq];
+					if (RANK(sq) <= RANK(i) && RANK(sq) <= RANK(j)) between[i][j] &= SqClear[sq];
+					if (FILE(sq) >= FILE(i) && FILE(sq) >= FILE(j)) between[i][j] &= SqClear[sq];
+					if (FILE(sq) <= FILE(i) && FILE(sq) <= FILE(j)) between[i][j] &= SqClear[sq];
+				}
+			} else {
+				for (sq = A1; sq <= H8; sq++) {
+					if (MIN(RANK(i),RANK(j)) < RANK(sq) && MAX(RANK(i),RANK(j)) > RANK(sq))
+						if (MIN(FILE(i),FILE(j)) < FILE(sq) && MAX(FILE(i),FILE(j)) > FILE(sq))
+							BitSet(sq,between[i][j]);
+				}
+				between[i][j] &= DIAG[i];
+				between[i][j] &= DIAG[j];
+			}
+			between[i][j] &= SqClear[i];
+			between[i][j] &= SqClear[j];
+			between[j][i] = between[i][j];
+		}
+	}
+#endif
   randkey = 1; /* HACK */
   InitZobrist ();
 #ifdef MAGIC_BITBOARDS

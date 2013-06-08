@@ -50,7 +50,7 @@ static int InitFlags (int wP, int wN, int wB, int wBL, int wBD, int wR, int wQ,
     FLAGS |= WHITE_MINOR_ONLY << 2;
   if (bN == 1 && !bQ && !bR && !bB)
     FLAGS |= BLACK_MINOR_ONLY << 2;
-  if (!wN && !wB && !wR && !wQ && !bN && !bB && !bQ && !bQ && wP + bP == 1)
+  if (!wN && !wB && !wR && !wQ && !bN && !bB && !bR && !bQ && wP + bP == 1) // Bug fix here: !bR, 6/5/2013, Yuri Censor
     FLAGS |= PAWN_ENDING << 2;
   if (wN == 1 && wB == 1 && !wR && !wQ && !wP && !bQ && !bR && !bB && !bN && !bP)
     FLAGS |= BISHOP_KNIGHT_MATE << 2;
@@ -353,10 +353,10 @@ static int WhiteWeight (int wP, int wN, int wB, int wBL, int wBD, int wR, int wQ
       if (bPHASE >= 3 && bMINOR == 0 && wPHASE == bPHASE)
 	wWEIGHT = 5;
       if (bPHASE == 4 && bQ == 1 && wPHASE == bPHASE)
-	wWEIGHT = 7;
-      if (wQ == 1 && wPHASE == 4 && bPHASE >= 2 && bP >= 1)
-	wWEIGHT = 5;
+	wWEIGHT = 7; 
     }
+  if (wQ == 1 && wPHASE == 4 && bPHASE >= 2 && bP >= 1)
+	wWEIGHT = 5;
   return wWEIGHT;
 }
 
@@ -619,10 +619,10 @@ static int BlackWeight (int wP, int wN, int wB, int wBL, int wBD, int wR, int wQ
       if (wPHASE >= 3 && wMINOR == 0 && bPHASE == wPHASE)
 	bWEIGHT = 5;
       if (wPHASE == 4 && wQ == 1 && bPHASE == wPHASE)
-	bWEIGHT = 7;
-      if (bQ == 1 && bPHASE == 4 && wPHASE >= 2 && wP >= 1)
-	bWEIGHT = 5;
+	bWEIGHT = 7; 
     }
+  if (bQ == 1 && bPHASE == 4 && wPHASE >= 2 && wP >= 1)
+	bWEIGHT = 5;
   return bWEIGHT;
 }
 

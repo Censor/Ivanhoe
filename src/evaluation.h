@@ -1,7 +1,7 @@
 
 #define wOutpost 0x00007e7e7e000000
 #define bOutpost 0x0000007e7e7e0000
-
+#include "mios.h"
 #define Bitboard2(x, y) (1ULL << (x))|(1ULL << (y))
 static const uint64 RookTrapped[64] =
 { 0, Bitboard2 (A1, A2), Bitboard2 (A1, A2) | Bitboard2 (B1, B2), 0,
@@ -216,6 +216,27 @@ static const uint32 RankQueenEnd[8] =
 #define Rook6thEnd SCORE(25, 25)
 #define Queen7thEnd SCORE(10, 10)
 #endif
-
+#ifdef EVAL_ROOK_FIX
+#define rook_open_doubled SCORE(8, 3)
+#define rook_connected SCORE(5, 2)
+#endif
 static const uint64 CrampFile[8] =
   { FILEb, 0, 0, 0, 0, 0, 0, FILEg };
+#ifdef EVAL_PINS
+static const int pin_score_white_bishop[16] = {
+	0, 0, SCORE(6, 6), 0, 0, 0, SCORE(4, 4), SCORE(4, 4), 0, 0, SCORE(8, 8), 0, 0, 0, SCORE(15, 15), SCORE(15, 15) 
+};
+static const int pin_score_black_bishop[16] = {
+	0, 0, SCORE(8, 8), 0, 0, 0, SCORE(15, 15), SCORE(15, 15), 0, 0, SCORE(6, 6), 0, 0, 0, SCORE(4, 4), SCORE(4, 4) 
+};
+static const int pin_score_white_rook[16] = {
+	0, 0, SCORE(8, 8), 0, SCORE(6, 6), SCORE(6, 6), 0, 0, 0, 0, SCORE(8, 8), 0, SCORE(6, 6), SCORE(6, 6), 0, 0 
+};
+static const int pin_score_black_rook[16] = {
+	0, 0, SCORE(8, 8), 0, SCORE(6, 6), SCORE(6, 6), 0, 0, 0, 0, SCORE(8, 8), 0, SCORE(6, 6), SCORE(6, 6), 0, 0
+};
+#define white_bishop_pin_target (bBitboardQ | bBitboardR)
+#define white_rook_pin_target (bBitboardQ)
+#define black_bishop_pin_target (wBitboardQ | wBitboardR)
+#define black_rook_pin_target (wBitboardQ)
+#endif

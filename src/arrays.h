@@ -1,6 +1,6 @@
 
 /* SLAB ALL? */
-
+#include "mios.h"
 SLAB_DECLARE1 (uint64, AttN, 64);
 SLAB_DECLARE1 (uint64, AttK, 64);
 SLAB_DECLARE1 (uint64, AttPw, 64);
@@ -155,3 +155,7 @@ static const uint64 B1C1D1 = 0x000000000000000e;
 static const uint64 F8G8 = 0x6000000000000000;
 static const uint64 C8D8 = 0x0c00000000000000;
 static const uint64 B8C8D8 = 0x0e00000000000000;
+#ifdef EVAL_PINS
+uint64 between[64][64];
+uint64   ortodiagonal[64];
+#endif

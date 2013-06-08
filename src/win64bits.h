@@ -33,15 +33,24 @@ BSR (UINT64 x)
 #endif
 
 #ifdef HAS_POPCNT
-static int
-POPCNT (UINT64 x)
-{
-  /* return __popcnt64 (x); */
+#ifdef INTEL_COMPILER
+#include "nmmintrin.h"
+static INLINE long long POPCNT (unsigned long long x)
+	{
+  	return _mm_popcnt_u64(x);
+	}
+//__forceinline int POPCNT(unsigned __int64 x) {
+//	return (int) _mm_popcnt_u64(x);
+//}
+#else
+static int POPCNT (UINT64 x)
+{ 
   _asm
     {
       popcnt rax, x
     }
 }
+#endif
 #else /* no POPCNT */
 static INLINE int
 POPCNT (uint64 w)

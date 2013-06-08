@@ -242,7 +242,7 @@ int InitHash (int mb)
   InitPawnHash (PAWN_HASH_MB);
   InitPVHash ((PV_HASH_SIZE * sizeof (typePVHash)) >> 20); /* HACK */
   InitEvalHash ((EvalHashSize * sizeof (uint64)) >> 10); /* HACK */
-  InitSlab (4); /* HACK */
+  InitSlab (SLAB_SIZE); /* HACK */
   return MB;
 }
 
@@ -286,7 +286,7 @@ int InitHash (int mb)
   InitPawnHash (PAWN_HASH_MB);
   InitPVHash ((PV_HASH_SIZE * sizeof (typePVHash)) >> 20); /* HACK */
   InitEvalHash ((EvalHashSize * sizeof (uint64)) >> 10); /* HACK */
-  InitSlab (4); /* HACK */
+  InitSlab (SLAB_SIZE); /* HACK */
   return mb;
 }
 

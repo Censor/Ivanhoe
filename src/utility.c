@@ -71,7 +71,7 @@ static void DoBad (char* x)
 }
 
 #define BAD(x) { DoBad (x); return; }
-#include "material_value.i"
+#include "material_value.h"
 
 #define TWEAK (0x74d3c012a8bf965e)
 void InitBitboards (typePOS* POSITION)

@@ -2,7 +2,7 @@
 typedef struct { sint16 Value; uint8 token, flags; } typeMATERIAL;
 SLAB_DECLARE2 (typeMATERIAL, MATERIAL, 419904); /* SMP read */ /* SLAB 1.68mb */
 
-#define SLAB_SIZE 4 /* mb */
+
 
 #ifdef MAGIC_BITBOARDS
 SLAB_DECLARE1 (type_MM, ROOK_MM, 64);

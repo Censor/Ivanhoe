@@ -137,6 +137,7 @@
     <ClInclude Include="black.h" />
     <ClInclude Include="common.h" />
     <ClInclude Include="control.h" />
+    <ClInclude Include="evaluation.h" />
     <ClInclude Include="functions.h" />
     <ClInclude Include="IH-board.h" />
     <ClInclude Include="IH-hash.h" />
@@ -145,7 +146,10 @@
     <ClInclude Include="IH-win-linux.h" />
     <ClInclude Include="IH-ZOG-MP.h" />
     <ClInclude Include="make_unmake.h" />
+    <ClInclude Include="material_value.h" />
+    <ClInclude Include="mios.h" />
     <ClInclude Include="MonteCarlo.h" />
+    <ClInclude Include="pawn_eval.h" />
     <ClInclude Include="RobboBaseLibUsage.h" />
     <ClInclude Include="RobboLito.h" />
     <ClInclude Include="RobboTotalBase.h" />
@@ -160,7 +164,6 @@
   <ItemGroup>
     <None Include="history.i" />
     <None Include="init_gen.i" />
-    <None Include="material_value.i" />
     <None Include="null_move.i" />
   </ItemGroup>
   <ItemGroup>

@@ -90,15 +90,24 @@
     <ClInclude Include="win64bits.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="evaluation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="material_value.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pawn_eval.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mios.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="history.i">
       <Filter>Header Files</Filter>
     </None>
     <None Include="init_gen.i">
-      <Filter>Header Files</Filter>
-    </None>
-    <None Include="material_value.i">
       <Filter>Header Files</Filter>
     </None>
     <None Include="null_move.i">

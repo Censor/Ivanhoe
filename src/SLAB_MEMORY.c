@@ -19,7 +19,7 @@ void* FromSlab (uint64 sz)
   if (CURRENT_SLAB_LOC - SLAB_ROOT_LOC > CURRENT_SLAB_SIZE)
     {
       CURRENT_SLAB_LOC -= sz;
-      SEND ("FromSlab %d failed\n", (int) (sz));
+      SEND ("FromSlab failed: CURRENT_SLAB_LOC=%d, SLAB_ROOT_LOC=%d, CURRENT_SLAB_SIZE=%d, sz=%d \n", (int)CURRENT_SLAB_LOC,(int)SLAB_ROOT_LOC,(int)CURRENT_SLAB_SIZE,(int) (sz));
       return NULL;
     }
   return A;
@@ -38,7 +38,7 @@ void InitSlab (int mb)
 #ifdef SLAB_MEMORY
   if (SLAB_ROOT_LOC)
     DeleteSlab ();
-  CURRENT_SLAB_SIZE = mb * 0x100000;
+  CURRENT_SLAB_SIZE = mb * 0x1000000; // Yuri Censor added a 0 here, 6/7/2013
   CREATE_MEM
     (&SLAB_ROOT_LOC, 64, CURRENT_SLAB_SIZE, &SLAB_NUMBER, &LARGE_SLAB, "SLAB");
   CURRENT_SLAB_LOC = SLAB_ROOT_LOC + (0x40 - ((uint64) (SLAB_ROOT_LOC) & 0x3f));

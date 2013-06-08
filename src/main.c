@@ -1,5 +1,6 @@
 
 #include "RobboLito.h"
+#include "mios.h"
 
 void ResetPositionalGain ()
 {
@@ -215,7 +216,7 @@ int main ()
   OUTPUT_DELAY = 0;
   UCI_PONDER = FALSE;
   VERIFY_NULL = TRUE;
-  ROBBO_LOAD = ROBBO_TOTAL_LOAD = FALSE;
+  ROBBO_LOAD = ROBBO_TOTAL_LOAD = FALSE; 
   SEARCH_ROBBO_BASES = TRUE;
   MULTI_PV = 1;
   SEND_HASH = FALSE; /* aid GUI */

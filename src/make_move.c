@@ -1,6 +1,6 @@
 #include "RobboLito.h"
 #include "make_unmake.h"
-#include "material_value.i"
+#include "material_value.h"
 
 #define REV_CASTLE(POS) (POS)->DYN->reversible = 0
 

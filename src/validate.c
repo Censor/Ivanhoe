@@ -3,7 +3,7 @@
 #include "RobboLito.h"
 #define TWEAK (0x74d3c012a8bf965e)
 #include <signal.h>
-#include "material_value.i"
+#include "material_value.h"
 void validate (typePOS* POSITION, int x, uint32 move)
 {
   int sq, pez;

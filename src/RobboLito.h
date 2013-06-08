@@ -3,26 +3,30 @@
 
 #define TRUE 1
 #define FALSE 0
+#ifndef WINDOWS
 #define boolean uint8
+#endif
 #define WINDOWS
 #define WINDOWS_X64
-#define EPONYM "IvanHoe"
-#define VERSION "999945a"
+#define EPONYM "Ivanhoe"
+#define VERSION "1945a"
 #define HAS_PREFETCH
 #ifdef WINDOWS
 #define WINDOWS_LARGE_PAGES
 #define HAS_POPCNT
 #define INTEL_COMPILER
 #endif
-#define CON_ROBBO_BUILD
+// #define CON_ROBBO_BUILD // Uncomment to turn on RobboBases support. 
+//#define STATIC_LINKERY
 #define NOME_WINDOWS
 #define MODE_GAME_PLAY
 #define MAGIC_BITBOARDS
 /* #define ZUGZWANG_DETECT */ /* for the off */
 #define ONE_DIMENSIONAL
-//#define SLAB_MEMORY /* 1% slower w/o LARGE_PAGES, 2% faster with LARGE_PAGES */
+#define SLAB_MEMORY /* 1% slower w/o LARGE_PAGES, 2% faster with LARGE_PAGES */
 #define MULTIPLE_POS_GAIN
 #define MULTIPLE_HISTORY
+//#define USER_SPLIT
 #ifndef YUSUF_MULTICORE
 #define YUSUF_MULTICORE
 #endif
@@ -31,6 +35,7 @@
 #ifndef ONE_DIMENSIONAL
 #error SLAB_MEMORY requires ONE_DIMENSIONAL
 #endif
+#define SLAB_SIZE 4 /* mb */ 
 #define SLAB_DECLARE1(Type, v, c) Type v[c]
 #define SLAB_ALLOC1(Type, v, c) /* */
 #define SLAB_DECLARE2(Type, v, c) Type *v
@@ -185,7 +190,6 @@ int UCI_Black_Light_Scale, UCI_Black_Dark_Scale;
 int UCI_Black_Rook_Scale, UCI_Black_Queen_Scale;
 int UCI_MATERIAL_WEIGHTING, UCI_PAWNS_WEIGHTING, UCI_KING_SAFETY_WEIGHTING;
 int UCI_STATIC_WEIGHTING, UCI_MOBILITY_WEIGHTING; /* for the novel */
-
 boolean USE_ALTERNATIVE_TIME, ALLOW_INSTANT_MOVE, SEARCH_ROBBO_BASES;
 boolean ROBBO_TRIPLE_DRAW, UCI_OPTION_CHESS_960; /* SMP readings ! */
 uint8 CHESS_960_KR_FILE, CHESS_960_QR_FILE, CHESS_960_KING_FILE;
@@ -265,3 +269,21 @@ boolean ROBBO_LOAD, ROBBO_TOTAL_LOAD;
  
 FILE* LOGFILE;
 char *INPUT_BUFFER, *input_ptr;
+// 6/7/2013 addition begins:
+extern void magic_mult_init ();
+
+int DESIRED_TIME_FLAG;
+
+extern void QUIT_PV ();
+extern void QUIT_LARGE_PAWNS ();
+extern void DETACH_ALL_MEMORY ();
+extern void QUIT_EVAL_HASH ();
+#ifdef CON_ROBBO_BUILD
+extern void QUIT_TRIPLE_HASH ();
+#endif
+extern void DeleteSlab ();
+extern void  main_line (typePOS* POSITION);
+extern void InitSend (); 
+extern void SETUP_PRIVILEGES ();
+extern int GetNumCPU();
+// 6/7/2013 addition ends.
